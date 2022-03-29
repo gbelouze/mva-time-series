@@ -13,7 +13,7 @@ class Detector(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def detect(self, ts: NDArray[np.float64], ts_predicted: NDArray[np.float64]) -> NDArray[np.bool_]:
+    def detect(self) -> NDArray[np.bool_]:
         """
         Notes
         -----

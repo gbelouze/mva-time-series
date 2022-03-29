@@ -1,4 +1,5 @@
 import abc
+from typing import Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -50,6 +51,8 @@ class Predictor(abc.ABC):
         return self._sae
 
     def set_features(self, ts: NDArray[np.float64], predicted: NDArray[np.float64]) -> None:
+        assert self.fitted
+
         epsilon = 1e-6
         sum_err = 0.0
         sum_abs_err = 0.0
@@ -75,7 +78,7 @@ class Predictor(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def predict(self, ts: NDArray[np.float64]) -> NDArray[np.float64]:
+    def predict(self, start: int = 0, end: Optional[int] = None) -> NDArray[np.float64]:
         """
         Notes
         -----

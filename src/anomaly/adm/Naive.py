@@ -1,3 +1,5 @@
+from typing import Any
+
 import numpy as np
 from anomaly.base import Detector, Filter
 
@@ -8,13 +10,17 @@ class NaiveDetector(Detector):
     def __init__(self, threshold: float = 0.1) -> None:
         self.threshold = threshold
         self.fitted = False
+        self.ts: Any = None
+        self.ts_predicted: Any = None
 
     def fit(self, ts, ts_predicted):
         self.fitted = True
+        self.ts = ts
+        self.ts_predicted = ts_predicted
 
-    def detect(self, ts, ts_predicted):
+    def detect(self):
         assert self.fitted
-        return np.abs(ts - ts_predicted) > self.threshold
+        return np.abs(self.ts - self.ts_predicted) > self.threshold
 
 
 class NaiveFilter(Filter):

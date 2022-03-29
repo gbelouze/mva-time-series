@@ -1,3 +1,5 @@
+from typing import Any
+
 from anomaly.base import Predictor
 
 
@@ -13,14 +15,22 @@ class NaivePredictor(Predictor):
         self._mse = -1
         self._sae = -1
         self.fitted = False
+        self.ts: Any = None
 
     def fit(self, ts):
         self.fitted = True
+        self.ts = ts
+        self.ts_predicted = ts.copy()
+        self.ts_predicted[1:] = ts[:-1]
 
-    def predict(self, ts):
+    def predict(self, start=0, end=None):
         assert self.fitted
-        ts[1:] = ts[:-1]
-        return ts
+        if end is None:
+            end = len(self.ts)
+
+        if end > len(self.ts) or start > len(self.ts):
+            raise ValueError("Naive model cannot do forecasting")
+        return self.ts_predicted[start:end]
 
 
 if __name__ == "__main__":
