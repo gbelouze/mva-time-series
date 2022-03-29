@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pandas as pd
+import pandas as pd  # type: ignore
 
 base_dir = Path(__file__).resolve().parents[2]
 data_dir = base_dir / "data" / "ydata-labeled-time-series-anomalies-v1_0"
