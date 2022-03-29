@@ -12,11 +12,13 @@ class NaivePredictor(Predictor):
         self._mape = -1
         self._mse = -1
         self._sae = -1
+        self.fitted = False
 
     def fit(self, ts):
-        pass
+        self.fitted = True
 
     def predict(self, ts):
+        assert self.fitted
         ts[1:] = ts[:-1]
         return ts
 
