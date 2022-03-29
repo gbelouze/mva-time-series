@@ -23,3 +23,35 @@ def test_fit_naive():
 
 def test_predict_naive():
     _test_predict(naive_predictor)
+
+
+def test_fit_ar():
+    _test_fit(ar_predictor)
+
+
+def test_predict_ar():
+    _test_predict(ar_predictor)
+
+
+def test_fit_ma():
+    _test_fit(ma_predictor)
+
+
+def test_predict_ma():
+    _test_predict(ma_predictor)
+
+
+def test_fit_arma():
+    _test_fit(arma_predictor)
+
+
+def test_predict_arma():
+    _test_predict(arma_predictor)
+
+
+def test_fit_poly():
+    _test_fit(poly_predictor)
+
+
+def test_predict_poly():
+    _test_predict(poly_predictor)
