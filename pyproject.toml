@@ -29,7 +29,11 @@ dependencies = [
     "matplotlib",
     "pandas",
     "sklearn",
-    "statsmodels"
+    "statsmodels",
+    "patsy",
+    "scipy",
+    "hurst",
+    "nolds",
 ]
 
 [tool.flit.module]
