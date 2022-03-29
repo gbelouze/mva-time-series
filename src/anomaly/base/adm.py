@@ -2,6 +2,7 @@ import abc
 
 import numpy as np
 from anomaly.base.tmm import Predictor
+from numpy.typing import NDArray
 
 
 class Detector(abc.ABC):
@@ -11,5 +12,5 @@ class Detector(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def detect(self, ts: np.ndarray):
+    def detect(self, ts: NDArray[np.float64]) -> NDArray[np.int32]:
         pass

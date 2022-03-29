@@ -23,6 +23,11 @@ classifiers = [
 requires-python = ">=3.5"
 license = {"file" = "LICENSE"}
 dynamic = ["version", "description"]
+dependencies = [
+    "numpy",
+    "ruptures",
+    "matplotlib"
+]
 
 [tool.flit.module]
 name = "anomaly"
