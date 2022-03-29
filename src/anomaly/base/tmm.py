@@ -12,6 +12,8 @@ class Predictor(abc.ABC):
     _mse: float
     _sae: float
 
+    fitted: bool
+
     @property
     def bias(self) -> float:
         r"""The arithmetic mean of the errors
@@ -74,4 +76,9 @@ class Predictor(abc.ABC):
 
     @abc.abstractmethod
     def predict(self, ts: NDArray[np.float64]) -> NDArray[np.float64]:
+        """
+        Notes
+        -----
+            Predictor instance must be fitted first
+        """
         pass
