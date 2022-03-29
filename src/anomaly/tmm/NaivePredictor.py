@@ -1,4 +1,4 @@
-from anomaly.base.tmm import Predictor
+from anomaly.base import Predictor
 
 
 class NaivePredictor(Predictor):
