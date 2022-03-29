@@ -28,7 +28,8 @@ dependencies = [
     "ruptures",
     "matplotlib",
     "pandas",
-    "sklearn"
+    "sklearn",
+    "statsmodels"
 ]
 
 [tool.flit.module]
