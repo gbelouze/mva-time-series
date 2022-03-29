@@ -27,15 +27,16 @@ dependencies = [
     "numpy",
     "ruptures",
     "matplotlib",
-    "pandas"
+    "pandas",
+    "sklearn"
 ]
 
 [tool.flit.module]
 name = "anomaly"
 
 [project.urls]
-source = "https://github.com/gbelouze/anomaly"
-tracker = "https://github.com/gbelouze/anomaly/issues"
+source = "https://github.com/gbelouze/mva-time-series"
+tracker = "https://github.com/gbelouze/mva-time-series/issues"
 
 [project.optional-dependencies]
 dev = [
