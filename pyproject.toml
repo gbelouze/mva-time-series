@@ -26,7 +26,8 @@ dynamic = ["version", "description"]
 dependencies = [
     "numpy",
     "ruptures",
-    "matplotlib"
+    "matplotlib",
+    "pandas"
 ]
 
 [tool.flit.module]
