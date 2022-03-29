@@ -1,1 +1,1 @@
-from .NaivePredictor import NaivePredictor  # noqa
+from .NaivePredictor import NaivePredictor as NaivePredictor  # noqa

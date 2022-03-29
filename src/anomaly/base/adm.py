@@ -12,5 +12,5 @@ class Detector(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def detect(self, ts: NDArray[np.float64]) -> NDArray[np.int32]:
+    def detect(self, ts: NDArray[np.float64]) -> NDArray[np.bool_]:
         pass
