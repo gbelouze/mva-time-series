@@ -14,10 +14,10 @@ EPSILON = 10**(-9)
 """
 compute the time series features as described in 
 
-Rule induction for forecasting method selection: meta-learning the 
-characteristics of univariate time series
+"Rule induction for forecasting method selection: meta-learning the 
+characteristics of univariate time series", Xiaozhe Wang, Kate Smith-Miles, Rob Hyndman
 
-Xiaozhe Wang, Kate Smith-Miles, Rob Hyndman
+These features will be used for model selection in step 1/ and anomaly filtering in step 3/.
 """
 
 
@@ -30,6 +30,8 @@ class TS_Features():
         self.kurtosis = compute_kurtosis(ts)
         self.lyapunov = compute_lyapunov(ts)
 
+
+        # TODO: should be normalized to [0,1]?
         self.features = np.array([
             self.periodicity,
             self.trend_score,
