@@ -1,5 +1,5 @@
-import anomaly.tmm as tmm
 import numpy as np
+from anomaly import tmm
 
 naive_predictor = tmm.NaivePredictor()
 
