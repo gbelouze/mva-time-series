@@ -17,7 +17,8 @@ class NaivePredictor(Predictor):
         pass
 
     def predict(self, ts):
-        pass
+        ts[1:] = ts[:-1]
+        return ts
 
 
 if __name__ == "__main__":
