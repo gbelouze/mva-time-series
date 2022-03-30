@@ -27,6 +27,7 @@ class TS_Features:
         self.nonlinearity = compute_nonlinearity(ts)
         self.skew = compute_skew(ts)
         self.kurtosis = compute_kurtosis(ts)
+        self.hurst = compute_hurst(ts)
         self.lyapunov = compute_lyapunov(ts)
 
         # TODO: should be normalized to [0,1]?
@@ -38,6 +39,7 @@ class TS_Features:
                 self.nonlinearity,
                 self.skew,
                 self.kurtosis,
+                self.hurst,
                 self.lyapunov,
             ]
         )
@@ -51,6 +53,7 @@ class TS_Features:
             "nonlinearity",
             "skew",
             "kurtosis",
+            "hurst",
             "lyapunov",
         ]
         return feature_names

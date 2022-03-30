@@ -35,6 +35,8 @@ dependencies = [
     "hurst",
     "nolds",
     "tqdm",
+    "seaborn",
+    "jupyterlab",
 ]
 
 [tool.flit.module]
