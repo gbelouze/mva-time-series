@@ -11,3 +11,12 @@ To install, run
 ```
 $ pip install -e .
 ```
+
+To install in a `venv`:
+
+```bash
+python3.9 -m venv ./venv/
+source ./venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e .
+```
