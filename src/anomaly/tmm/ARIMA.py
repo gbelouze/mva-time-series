@@ -22,7 +22,9 @@ class ARIMA(Predictor):
     def fit(self, ts):
         self.fitted = True
         self.ts = ts
-        self.ar = model.ARIMA(ts, order=self.order).fit()
+        md = model.ARIMA(ts, order=self.order)
+        md.initialize_approximate_diffuse()
+        self.ar = md.fit()
 
     def predict(self, start=0, end=None):
         assert self.fitted
