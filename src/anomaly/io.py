@@ -28,14 +28,6 @@ class BenchmarkDataset:
         self.files = glob.glob(s)
         self.len = len(self.files)
 
-    def read(self, i: int):
-        if i < 0 or i >= self.len:
-            raise IndexError("index out of dataset")
-        df = pd.read_csv(self.files[i])
-        df = df.rename(columns={"anomaly": "is_anomaly", "timestamps": "timestamp"})
-
-        return df
-
     def __iter__(self):
         self._index = -1
         return self
@@ -45,3 +37,14 @@ class BenchmarkDataset:
         if self._index < self.len:
             return self.read(self._index)
         raise StopIteration
+
+    def __len__(self):
+        return self.len
+
+    def read(self, i: int):
+        if i < 0 or i >= self.len:
+            raise IndexError("index out of dataset")
+        df = pd.read_csv(self.files[i])
+        df = df.rename(columns={"anomaly": "is_anomaly", "timestamps": "timestamp"})
+
+        return df
