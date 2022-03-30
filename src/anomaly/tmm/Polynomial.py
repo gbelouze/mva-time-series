@@ -5,7 +5,7 @@ from anomaly.base import Predictor
 
 
 class Polynomial(Predictor):
-    """Autoregressive model"""
+    """The polynomial predictor fits a polynomial regression"""
 
     def __init__(self, degree: int = 5) -> None:
         self._bias = -1
