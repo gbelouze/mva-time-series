@@ -1,7 +1,5 @@
-import numpy as np
-
 import anomaly.utils.statsutils as su
-
+import numpy as np
 
 ts = np.random.randn(100)
 

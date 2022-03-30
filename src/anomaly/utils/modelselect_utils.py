@@ -1,10 +1,9 @@
-from anomaly import io, tmm
-
-from anomaly import io, tmm, adm
-from sklearn.metrics import f1_score
-import pandas as pd
 import numpy as np
+import pandas as pd
 import tqdm
+from anomaly import adm, io
+from sklearn.metrics import f1_score
+
 
 def compute_predictor_scores(predictor_dict, benchmark_index, detector=adm.KSigma()):
     bench = io.BenchmarkDataset(benchmark_index)
@@ -27,18 +26,15 @@ def compute_predictor_scores(predictor_dict, benchmark_index, detector=adm.KSigm
             predicted_anomalies = detector.detect()
             f1 = f1_score(ts_label, predicted_anomalies)
 
-            score_dict_np[predictor_name][i] = np.array([
-                predictor.bias,
-                predictor.mad,
-                predictor.mape,
-                predictor.mse,
-                predictor.sae,
-                f1
-            ])
+            score_dict_np[predictor_name][i] = np.array(
+                [predictor.bias, predictor.mad, predictor.mape, predictor.mse, predictor.sae, f1]
+            )
 
     score_dict_np = dict.fromkeys(predictor_dict.keys(), np.empty(bench.len, len(score_names)))
 
-    score_dict = {predictor_name: pd.DataFrame(data=scores, columns=score_names)
-                  for predictor_name, scores in score_dict_np.items()}
+    score_dict = {
+        predictor_name: pd.DataFrame(data=scores, columns=score_names)
+        for predictor_name, scores in score_dict_np.items()
+    }
 
     return score_dict
