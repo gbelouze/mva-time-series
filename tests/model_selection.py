@@ -13,4 +13,4 @@ predictor_dict = {
     "poly_predictor": tmm.Polynomial(),
 }
 
-score_dict = mu.compute_predictor_scores(predictor_dict, 1, detector=adm.KSigma())
+score_dict = mu.compute_predictor_scores(predictor_dict, io.BenchmarkDataset(1), detector=adm.KSigma())
