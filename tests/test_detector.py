@@ -1,3 +1,4 @@
+import numpy as np
 from anomaly import adm, io, tmm
 
 naive_detector = adm.NaiveDetector()
@@ -5,7 +6,7 @@ ksigma_detector = adm.KSigma()
 
 
 def _test_fit(detector):
-    ts = io.read(1, 1).value
+    ts = np.array(io.read(1, 1).value)
 
     naive_predictor = tmm.NaivePredictor()
     naive_predictor.fit(ts)
