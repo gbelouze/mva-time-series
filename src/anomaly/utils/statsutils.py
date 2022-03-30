@@ -51,9 +51,10 @@ class TS_Features:
             "nonlinearity",
             "skew",
             "kurtosis",
-            "lyapunov"
+            "lyapunov",
         ]
         return feature_names
+
 
 def spline_regression(ts, n_knots=3):
     n = len(ts)
