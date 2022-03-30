@@ -6,6 +6,7 @@ import numpy as np
 import tqdm
 import sys
 
+
 def compute_predictor_scores(predictor_dict, bench, detector=adm.KSigma()):
 
     score_names = ["bias", "mad", "mape", "mse", "sae", "f1", "recall"]
@@ -38,8 +39,10 @@ def compute_predictor_scores(predictor_dict, bench, detector=adm.KSigma()):
 
             score_dict_np[predictor_name][i] = scores
 
-    score_dict = {predictor_name: pd.DataFrame(data=scores, columns=score_names)
-                  for predictor_name, scores in score_dict_np.items()}
+    score_dict = {
+        predictor_name: pd.DataFrame(data=scores, columns=score_names)
+        for predictor_name, scores in score_dict_np.items()
+    }
 
     return score_dict
 
@@ -57,3 +60,4 @@ def compute_benchmark_features(bench):
 
     features = pd.DataFrame(data=features_np, columns=feature_names)
     return features
+

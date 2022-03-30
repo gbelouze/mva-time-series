@@ -1,2 +1,1 @@
-from sklearn.ensemble import AdaBoostClassifier
-
+from sklearn.ensemble import AdaBoostClassifier  # noqa: F401

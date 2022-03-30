@@ -15,21 +15,21 @@ class ARIMA(Predictor):
         self._sae = -1
         self.fitted = False
 
-        self.ar: Any = None
+        self.arma: Any = None
         self.order = order
         self.ts: Any = None
 
     def fit(self, ts):
         self.fitted = True
         self.ts = ts
-        md = model.ARIMA(ts, order=self.order)
-        md.initialize_approximate_diffuse()
-        self.ar = md.fit()
+        self.arma = model.ARIMA(ts, order=self.order, enforce_invertibility=False, enforce_stationarity=False).fit()
 
     def predict(self, start=0, end=None):
         assert self.fitted
+        if end is None:
+            end = len(self.ts)
 
-        return self.ar.predict(start=start, end=(end - 1))
+        return self.arma.predict(start=start, end=(end - 1))
 
 
 class AR(ARIMA):

@@ -1,27 +1,26 @@
-import numpy as np
-from statsmodels.tsa.stattools import acf
-from statsmodels.tsa.seasonal import STL
-from statsmodels.regression.linear_model import OLS
-from statsmodels.stats.diagnostic import linear_rainbow
-from statsmodels.api import GLM
-from patsy import dmatrix
-import scipy
 import hurst
 import nolds
+import numpy as np
+import scipy
+from patsy import dmatrix
+from statsmodels.api import GLM
+from statsmodels.regression.linear_model import OLS
+from statsmodels.stats.diagnostic import linear_rainbow
+from statsmodels.tsa.seasonal import STL
+from statsmodels.tsa.stattools import acf
 
-
-EPSILON = 10**(-9)
+EPSILON = 1e-9
 """
-compute the time series features as described in 
+compute the time series features as described in
 
-"Rule induction for forecasting method selection: meta-learning the 
+"Rule induction for forecasting method selection: meta-learning the
 characteristics of univariate time series", Xiaozhe Wang, Kate Smith-Miles, Rob Hyndman
 
 These features will be used for model selection in step 1/ and anomaly filtering in step 3/.
 """
 
 
-class TS_Features():
+class TS_Features:
     def __init__(self, ts):
         trend, seasonality, self.periodicity = decompose_trend_and_seasonality(ts)
         self.trend_score, self.seasonality_score = compute_trend_and_seasonality_score(ts, trend, seasonality)
@@ -30,17 +29,18 @@ class TS_Features():
         self.kurtosis = compute_kurtosis(ts)
         self.lyapunov = compute_lyapunov(ts)
 
-
         # TODO: should be normalized to [0,1]?
-        self.features = np.array([
-            self.periodicity,
-            self.trend_score,
-            self.seasonality_score,
-            self.nonlinearity,
-            self.skew,
-            self.kurtosis,
-            self.lyapunov,
-        ])
+        self.features = np.array(
+            [
+                self.periodicity,
+                self.trend_score,
+                self.seasonality_score,
+                self.nonlinearity,
+                self.skew,
+                self.kurtosis,
+                self.lyapunov,
+            ]
+        )
 
     @staticmethod
     def list_features():
@@ -57,20 +57,30 @@ class TS_Features():
 
 def spline_regression(ts, n_knots=3):
     n = len(ts)
-    knots = [n//(n_knots+2) * i for i in range(1, n_knots+1)]
+    knots = [n // (n_knots + 2) * i for i in range(1, n_knots + 1)]
     knots_s = "(" + ",".join((str(knot) for knot in knots)) + ")"
-    basis_x = dmatrix(f"bs(timestamp, knots={knots_s}, degree=3, include_intercept=False)", {"timestamp": np.arange(n)}, return_type='dataframe')
+    basis_x = dmatrix(
+        f"bs(timestamp, knots={knots_s}, degree=3, include_intercept=False)",
+        {"timestamp": np.arange(n)},
+        return_type="dataframe",
+    )
     fit = GLM(ts, basis_x).fit()
 
-    predict = fit.predict(dmatrix(f"bs(timestamp, knots={knots_s}, include_intercept=False)", {"timestamp": np.arange(n)}, return_type='dataframe'))
+    predict = fit.predict(
+        dmatrix(
+            f"bs(timestamp, knots={knots_s}, include_intercept=False)",
+            {"timestamp": np.arange(n)},
+            return_type="dataframe",
+        )
+    )
 
     return predict
 
 
 def compute_periodicity(ts_value_detrend):
-    autocor_ts = acf(ts_value_detrend, nlags=len(ts_value_detrend)//3)
+    autocor_ts = acf(ts_value_detrend, nlags=len(ts_value_detrend) // 3)
     peaks, _ = scipy.signal.find_peaks(autocor_ts)
-    troughs, _ = scipy.signal.find_peaks(- autocor_ts)
+    troughs, _ = scipy.signal.find_peaks(-autocor_ts)
 
     i_trough = 0
     min_val_trough = autocor_ts[troughs[i_trough]]
@@ -120,8 +130,8 @@ def decompose_trend_and_seasonality(ts):
 
 def compute_trend_and_seasonality_score(ts, trend, seasonality):
     if seasonality is None:
-        trend_score = 1.
-        seasonality_score = 0.
+        trend_score = 1.0
+        seasonality_score = 0.0
     else:
         v_Y = np.var(ts)
         v_X = np.var(ts - trend)
@@ -154,4 +164,3 @@ def compute_hurst(ts):
 
 def compute_lyapunov(ts):
     return nolds.lyap_r(ts)
-
