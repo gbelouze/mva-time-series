@@ -26,4 +26,4 @@ class KSigma(Detector):
 
     def detect(self):
         assert self.fitted
-        return np.abs(self.ts - self.ts_predicted) > self.k * self.sigma
+        return np.abs(self.ts - self.ts_predicted - self.mu) > self.k * self.sigma
