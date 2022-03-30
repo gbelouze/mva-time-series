@@ -1,18 +1,17 @@
-from anomaly import io, tmm
-
 from anomaly import io, tmm, adm
-from sklearn.metrics import f1_score
+import anomaly.utils.statsutils as su
+from sklearn.metrics import f1_score, recall_score
 import pandas as pd
 import numpy as np
 import tqdm
+import sys
 
-def compute_predictor_scores(predictor_dict, benchmark_index, detector=adm.KSigma()):
-    bench = io.BenchmarkDataset(benchmark_index)
+def compute_predictor_scores(predictor_dict, bench, detector=adm.KSigma()):
 
-    score_names = ["bias", "mad", "mape", "mse", "sae", "f1"]
-    score_dict_np = dict.fromkeys(predictor_dict.keys(), np.empty((bench.len, len(score_names))))
+    score_names = ["bias", "mad", "mape", "mse", "sae", "f1", "recall"]
+    score_dict_np = { k : np.empty((bench.len, len(score_names))) for k in predictor_dict.keys()}
 
-    for i in tqdm.trange(bench.len):
+    for i in tqdm.trange(bench.len, file=sys.stdout):
         df = bench.read(i)
         ts = df.value
         ts_label = df.is_anomaly
@@ -26,19 +25,35 @@ def compute_predictor_scores(predictor_dict, benchmark_index, detector=adm.KSigm
             detector.fit(ts, ts_predicted)
             predicted_anomalies = detector.detect()
             f1 = f1_score(ts_label, predicted_anomalies)
-
-            score_dict_np[predictor_name][i] = np.array([
+            recall = recall_score(ts_label, predicted_anomalies)
+            scores = np.array([
                 predictor.bias,
                 predictor.mad,
                 predictor.mape,
                 predictor.mse,
                 predictor.sae,
-                f1
+                f1,
+                recall
             ])
 
-    score_dict_np = dict.fromkeys(predictor_dict.keys(), np.empty(bench.len, len(score_names)))
+            score_dict_np[predictor_name][i] = scores
 
     score_dict = {predictor_name: pd.DataFrame(data=scores, columns=score_names)
                   for predictor_name, scores in score_dict_np.items()}
 
     return score_dict
+
+
+def compute_benchmark_features(bench):
+    feature_names = su.TS_Features.list_features()
+
+    features_np = np.empty((bench.len, len(feature_names)))
+
+    for i in tqdm.trange(bench.len, file=sys.stdout):
+        df = bench.read(i)
+        ts = df.value
+
+        features_np[i] = su.TS_Features(ts).features
+
+    features = pd.DataFrame(data=features_np, columns=feature_names)
+    return features

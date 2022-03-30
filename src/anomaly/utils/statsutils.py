@@ -42,6 +42,18 @@ class TS_Features():
             self.lyapunov,
         ])
 
+    @staticmethod
+    def list_features():
+        feature_names = [
+            "periodicity",
+            "trend_score",
+            "seasonality_score",
+            "nonlinearity",
+            "skew",
+            "kurtosis",
+            "lyapunov"
+        ]
+        return feature_names
 
 def spline_regression(ts, n_knots=3):
     n = len(ts)
@@ -73,7 +85,7 @@ def compute_periodicity(ts_value_detrend):
             continue
 
         # we must have peak - trough > 0.1
-        while troughs[i_trough + 1] < peak:
+        while i_trough + 1 < len(troughs) and [i_trough + 1] < peak:
             i_trough += 1
             min_val_trough = min(min_val_trough, autocor_ts[troughs[i_trough]])
 
