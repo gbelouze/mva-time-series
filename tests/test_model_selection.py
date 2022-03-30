@@ -1,31 +1,21 @@
 from anomaly import io, tmm, adm
+from sklearn.metrics import f1_score
 import pandas as pd
+import numpy as np
+
+import anomaly.utils.modelselect_utils as mu
 
 import anomaly.utils.statsutils as su
 
 
-bench = io.BenchmarkDataset(1)
-print(bench.read(1).columns)
+predictor_dict = {
+"naive_predictor" : tmm.NaivePredictor(),
+"ar_predictor" : tmm.AR(),
+"ma_predictor" : tmm.MA(),
+"arma_predictor" : tmm.ARMA(),
+"poly_predictor" : tmm.Polynomial(),
+}
 
-bench = io.BenchmarkDataset(3)
-print(bench.read(1).columns)
-
-naive_predictor = tmm.NaivePredictor()
-ar_predictor = tmm.AR()
-ma_predictor = tmm.MA()
-arma_predictor = tmm.ARMA()
-poly_predictor = tmm.Polynomial()
-
-
-
-predictor = tmm.ARMA()
-detector = adm.KSigma()
-data = io.read(2, 1)
-ts = data.value
-predictor.fit(ts)
-
-ts_predicted = predictor.predict()
-detector.fit(ts, ts_predicted)
-predicted_anomalies = detector.detect()
+score_dict = mu.compute_predictor_scores(predictor_dict, 1, detector=adm.KSigma())
 
 
