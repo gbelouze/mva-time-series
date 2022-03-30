@@ -1,3 +1,4 @@
+import numpy as np
 from anomaly import io, tmm
 
 naive_predictor = tmm.NaivePredictor()
@@ -5,10 +6,13 @@ ar_predictor = tmm.AR()
 ma_predictor = tmm.MA()
 arma_predictor = tmm.ARMA()
 poly_predictor = tmm.Polynomial()
+trigo_predictor = tmm.Trigonometric()
+sequential_predictor = tmm.Sequential([poly_predictor, arma_predictor])
+best_predictor = tmm.Best([poly_predictor, arma_predictor, naive_predictor])
 
 
 def _test_fit(predictor):
-    ts = io.read(1, 1).value
+    ts = np.array(io.read(1, 1).value)
     predictor.fit(ts)
 
 
@@ -55,3 +59,27 @@ def test_fit_poly():
 
 def test_predict_poly():
     _test_predict(poly_predictor)
+
+
+def test_fit_trigo():
+    _test_fit(trigo_predictor)
+
+
+def test_predict_trigo():
+    _test_predict(trigo_predictor)
+
+
+def test_fit_sequential():
+    _test_fit(sequential_predictor)
+
+
+def test_predict_sequential():
+    _test_predict(sequential_predictor)
+
+
+def test_fit_best():
+    _test_fit(best_predictor)
+
+
+def test_predict_best():
+    _test_predict(best_predictor)
